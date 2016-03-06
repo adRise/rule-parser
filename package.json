@@ -6,8 +6,12 @@
   "scripts": {
     "test": "ava test.js"
   },
-  "author": "",
-  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adRise/rule-parser.git"
+  },
+  "author": "Tyr Chen",
+  "license": "MIT",
   "dependencies": {
     "jison": "^0.4.17"
   },

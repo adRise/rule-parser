@@ -38,7 +38,7 @@
                       return 'DATE'
 
 [0-9]+("."[0-9]+)?\b  return 'NUMBER'
-\"[^\"]+\"            return 'STRING'
+\"[^\"]*\"            return 'STRING'
 [a-z]+                return 'VARIABLE'
 "("                   return '('
 ")"                   return ')'

@@ -101,6 +101,6 @@ e
 
 function isIn(s, v) {
   const arr = v.split(',').map(function(item){return item.trim()});
-  var mySet = new Set(arr);
+  const mySet = new Set(arr);
   return mySet.has(s);
 }

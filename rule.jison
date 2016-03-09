@@ -104,5 +104,5 @@ e
 %%
 
 function splitArray(input){
-  return input.replace(/[\[\]]+/g,'').split(',').map(function(item){return JSON.parse(item.trim())});
+  return input.replace(/\[|\]+/g,'').split(',').map(function(item){return item ? JSON.parse(item.trim()): ''});
 }

@@ -40,6 +40,7 @@
 [0-9]+("."[0-9]+)?\b  return 'NUMBER'
 \"[^\"]*\"            return 'STRING'
 [a-z]+                return 'VARIABLE'
+\[.*?\]               return 'ARRAY'
 "("                   return '('
 ")"                   return ')'
 <<EOF>>               return 'EOF'
@@ -56,6 +57,7 @@
 
 %start expressions
 %parse-param data
+%parse-param validator
 
 %% /* language grammar */
 
@@ -76,7 +78,7 @@ e
     | e '<>' e
         {$$ = $1 !== $3;}
     | e IN e
-        %{$$ = isIn($1, $3);%}
+        {$$ = $3.indexOf($1) !== -1;}
     | e '>' e
         {$$ = $1 > $3;}
     | e '>=' e
@@ -88,19 +90,19 @@ e
     | '(' e ')'
         {$$ = $2;}
     | NUMBER
-        {$$ = Number(yytext);}
+        {$$ = validator ? validator.number(Number(yytext)) : Number(yytext);}
     | VARIABLE
-        {$$ = data[yytext];}
+        {$$ = validator ? validator.variable(yytext, data) : data[yytext];}
     | STRING
-        {$$ = JSON.parse(yytext);}
+        {$$ = validator ? validator.string(JSON.parse(yytext)) : JSON.parse(yytext);}
+    | ARRAY
+        {$$ = validator ? validator.array(splitArray(yytext)) : splitArray(yytext);}
     | DATE
         {$$ = new Date(yytext);}
     ;
 
 %%
 
-function isIn(s, v) {
-  const arr = v.split(',').map(function(item){return item.trim()});
-  const mySet = new Set(arr);
-  return mySet.has(s);
+function splitArray(input){
+  return input.replace(/[\[\]]+/g,'').split(',').map(function(item){return JSON.parse(item.trim())});
 }

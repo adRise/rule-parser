@@ -34,6 +34,8 @@ node_modules
 
 .nyc_output
 
+play.js
+
 .idea
 
 logs

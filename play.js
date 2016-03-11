@@ -42,10 +42,6 @@ var jison = require("jison");
 var bnf = fs.readFileSync("rule.jison", "utf8");
 var parser = new jison.Parser(bnf);
 
-var output  = parser.parse('country in "US" and date > 12/23/2015 and platform = "amazon"', {
-  country: 'US',
-  date: new Date('04/02/2016'),
-  platform: 'amazon',
-}, validator);
+var output  = parser.parse('country in "US" and date > 12/23/2015 and', {}, validator);
 
 console.log(output);

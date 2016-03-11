@@ -73,23 +73,26 @@ e
         {$$ = $1 && $3;}
     | NOT e
         {$$ = !$2;}
-    | e '=' e
+    | term '=' term
         {$$ = $1 === $3;}
-    | e '<>' e
+    | term '<>' term
         {$$ = $1 !== $3;}
-    | e IN e
+    | term IN term
         {$$ = $3.indexOf($1) !== -1;}
-    | e '>' e
+    | term '>' term
         {$$ = $1 > $3;}
-    | e '>=' e
+    | term '>=' term
         {$$ = $1 >= $3;}
-    | e '<' e
+    | term '<' term
         {$$ = $1 < $3;}
-    | e '<=' e
+    | term '<=' term
         {$$ = $1 <= $3;}
     | '(' e ')'
         {$$ = $2;}
-    | NUMBER
+    ;
+
+term
+    : NUMBER
         {$$ = validator ? validator.number(Number(yytext)) : Number(yytext);}
     | VARIABLE
         {$$ = validator ? validator.variable(yytext, data) : data[yytext];}

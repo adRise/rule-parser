@@ -42,11 +42,15 @@ test('in works', t => {
   const v2 = parser.parse(expr, {str: 'e'});
   const v3 = parser.parse(expr, {str: 'x'});
   const v4 = parser.parse(`not ${expr}`, {str: 'x'});
+  const v5 = parser.parse('str not in ["a","b","c"]', {str: 'x'});
+  const v6 = parser.parse('str not in ["a","b","c"]', {str: 'a'});
 
   t.true(v1);
   t.true(v2);
   t.false(v3);
   t.true(v4);
+  t.true(v5);
+  t.false(v6);
 });
 
 test('validator works', t => {

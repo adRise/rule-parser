@@ -23,6 +23,7 @@
 \s+                   /* skip whitespace */
 'or'                  return 'OR'
 'and'                 return 'AND'
+'not in'              return 'NOT_IN'
 "in"                  return 'IN'
 'not'                 return 'NOT'
 ">="                  return '>='
@@ -79,6 +80,8 @@ e
         {$$ = $1 !== $3;}
     | term IN term
         {$$ = $3.indexOf($1) !== -1;}
+    | term NOT_IN term
+        {$$ = $3.indexOf($1) === -1;}
     | term '>' term
         {$$ = $1 > $3;}
     | term '>=' term

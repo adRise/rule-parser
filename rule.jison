@@ -79,9 +79,9 @@ e
     | term '<>' term
         {$$ = $1 !== $3;}
     | term IN term
-        {$$ = $3.indexOf($1) !== -1;}
+        {$$ = validator ? validator.in($1, $3) : $3.indexOf($1) !== -1}
     | term NOT_IN term
-        {$$ = $3.indexOf($1) === -1;}
+        {$$ = validator ? validator.not_in($1, $3) : $3.indexOf($1) === -1}
     | term '>' term
         {$$ = $1 > $3;}
     | term '>=' term

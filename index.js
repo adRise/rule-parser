@@ -102,10 +102,10 @@ case 6:
 this.$ = $$[$0-2] !== $$[$0];
 break;
 case 7:
-this.$ = $$[$0].indexOf($$[$0-2]) !== -1;
+this.$ = validator ? validator.in($$[$0-2], $$[$0]) : $$[$0].indexOf($$[$0-2]) !== -1
 break;
 case 8:
-this.$ = $$[$0].indexOf($$[$0-2]) === -1;
+this.$ = validator ? validator.not_in($$[$0-2], $$[$0]) : $$[$0].indexOf($$[$0-2]) === -1
 break;
 case 9:
 this.$ = $$[$0-2] > $$[$0];

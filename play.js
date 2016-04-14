@@ -26,7 +26,9 @@ const validator = {
   },
   date: function (input) {
     try{
-      return new Date(input);
+      var result = new Date(input);
+      if (isNaN(result.getDate())) throw new Error('bad date format');
+      return result;
     } catch (e){
       throw new Error(input + ' is not a valid date');
     }

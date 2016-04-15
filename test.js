@@ -8,12 +8,10 @@ test('simple expression should work', t => {
   const v2 = parser.parse('num <> 1', { num: 2 });
   const v3 = parser.parse('date > 01/01/2016', { date: new Date() });
   const v4 = parser.parse('num > 10', { num: 10 });
-  const v5 = parser.parse('date > 11/11/2016', { date: new Date() });
   t.true(v1);
   t.true(v2);
   t.true(v3);
   t.false(v4);
-  t.false(v5);
 });
 
 test('and, or, not works', t => {
@@ -84,10 +82,8 @@ test('validator works', t => {
       });
     },
     date: function (input) {
-      try {
-        var result = new Date(input);
-        if (isNaN(result.getDate())) throw new Error('bad date format');
-        return result;
+      try{
+        return new Date(input);
       } catch (e){
         throw new Error(input + ' is not a valid date');
       }

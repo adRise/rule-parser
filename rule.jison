@@ -60,6 +60,7 @@
 %start expressions
 %parse-param data
 %parse-param validator
+%parse-param grammar
 
 %% /* language grammar */
 
@@ -70,27 +71,27 @@ expressions
 
 e
     : e OR e
-        {$$ = $1 || $3;}
+        {$$ = !grammar ? ($1 || $3) : {'or': [$1, $3]};}
     | e AND e
-        {$$ = $1 && $3;}
+        {$$ = !grammar ? ($1 && $3) : {'and': [$1, $3]};}
     | NOT e
-        {$$ = !$2;}
+        {$$ = !grammar ? !$2 : {'not': $2};}
     | term '=' term
-        {$$ = $1 === $3;}
+        {$$ = !grammar ? ($1 === $3) : {'eq': [$1, $3]};}
     | term '<>' term
-        {$$ = $1 !== $3;}
+        {$$ = !grammar ? ($1 !== $3) : {'neq': [$1, $3]};}
     | term IN term
-        {$$ = validator ? validator.in($1, $3) : $3.indexOf($1) !== -1}
+        {$$ = validator ? validator.in($1, $3) : (!grammar ? ($3.indexOf($1) !== -1) : {'in': [$1, $3]})}
     | term NOT_IN term
-        {$$ = validator ? validator.not_in($1, $3) : $3.indexOf($1) === -1}
+        {$$ = validator ? validator.not_in($1, $3) : (!grammar ? ($3.indexOf($1) === -1) : {'nin': [$1, $3]})}
     | term '>' term
-        {$$ = $1 > $3;}
+        {$$ = !grammar ? $1 > $3 : {'gt': [$1, $3]};}
     | term '>=' term
-        {$$ = $1 >= $3;}
+        {$$ = !grammar ? $1 >= $3 : {'gte': [$1, $3]};}
     | term '<' term
-        {$$ = $1 < $3;}
+        {$$ = !grammar ? $1 < $3 : {'lt': [$1, $3]};}
     | term '<=' term
-        {$$ = $1 <= $3;}
+        {$$ = !grammar ? $1 <= $3 : {'lte': [$1, $3]};}
     | '(' e ')'
         {$$ = $2;}
     ;
@@ -99,7 +100,7 @@ term
     : NUMBER
         {$$ = validator ? validator.number(Number(yytext)) : Number(yytext);}
     | VARIABLE
-        {$$ = validator ? validator.variable(yytext, data) : data[yytext];}
+        {$$ = validator ? validator.variable(yytext, data) : !grammar ? data[yytext]: yytext;}
     | STRING
         {$$ = validator ? validator.string(JSON.parse(yytext)) : JSON.parse(yytext);}
     | ARRAY
@@ -113,3 +114,6 @@ term
 function splitArray(input){
   return input.replace(/\[|\]+/g,'').split(',').map(function(item){return item ? JSON.parse(item.trim()): ''});
 }
+
+function _g() { return typeof grammar === 'undefined'; }
+function _v() { return typeof validator !== 'undefined'; }

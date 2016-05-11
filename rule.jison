@@ -38,7 +38,7 @@
 /* ((0?[13578]|10|12)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[01]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1}))|(0?[2469]|11)(-|\/)(([1-9])|(0[1-9])|([12])([0-9]?)|(3[0]?))(-|\/)((19)([2-9])(\d{1})|(20)([01])(\d{1})|([8901])(\d{1})))
                       return 'DATE' */
 \d{1,2}\/\d{1,2}\/\d{4}  return 'DATE'
-
+true|false            return 'BOOL'
 [0-9]+("."[0-9]+)?\b  return 'NUMBER'
 \"[^\"]*\"            return 'STRING'
 [a-z]+                return 'VARIABLE'
@@ -76,7 +76,7 @@ e
     | NOT e
         {$$ = !$2;}
     | term '=' term
-        {$$ = $1 === $3;}
+        {$$ = typeof $3 === 'boolean' ? $3 : $1 === $3;}
     | term '<>' term
         {$$ = $1 !== $3;}
     | term IN term
@@ -98,6 +98,8 @@ e
 term
     : NUMBER
         {$$ = validator ? validator.number(Number(yytext)) : Number(yytext);}
+    | BOOL
+        {$$ = yytext === 'true'}
     | VARIABLE
         {$$ = validator ? validator.variable(yytext, data) : data[yytext];}
     | STRING

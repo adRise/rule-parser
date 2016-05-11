@@ -38,6 +38,17 @@ test('and, or, not works', t => {
   t.true(v7);
 });
 
+test('boolean should work', t => {
+  const v1 = parser.parse('str = true', { str: 'world' });
+  const v2 = parser.parse('str = false', { str: 'new string' });
+  const v3 = parser.parse('str = false and date < 01/01/2050', { str: 'new string', date: new Date()});
+  const v4 = parser.parse('str = true and date < 01/01/2050', { str: 'new string', date: new Date()});
+  t.true(v1);
+  t.false(v2);
+  t.false(v3);
+  t.true(v4);
+});
+
 test('in works', t => {
   const expr = 'str in ["a", "b",     "c", "d", "e"]';
   const v1 = parser.parse(expr, {str: 'a'});

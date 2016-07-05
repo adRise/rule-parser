@@ -76,21 +76,21 @@ e
     | NOT e
         {$$ = !$2;}
     | term '=' term
-        {$$ = typeof $3 === 'boolean' ? $3 : $1 === $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : (typeof $3 === 'boolean' ? $3 : $1 === $3);}
     | term '<>' term
-        {$$ = $1 !== $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : $1 !== $3;}
     | term IN term
         {$$ = validator ? validator.in($1, $3) : $3.indexOf($1) !== -1}
     | term NOT_IN term
         {$$ = validator ? validator.not_in($1, $3) : $3.indexOf($1) === -1}
     | term '>' term
-        {$$ = $1 > $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : $1 > $3;}
     | term '>=' term
-        {$$ = $1 >= $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : $1 >= $3;}
     | term '<' term
-        {$$ = $1 < $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : $1 < $3;}
     | term '<=' term
-        {$$ = $1 <= $3;}
+        {$$ = validator ? validator.compare($1, $2, $3) : $1 <= $3;}
     | '(' e ')'
         {$$ = $2;}
     ;

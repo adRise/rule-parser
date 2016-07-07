@@ -96,10 +96,10 @@ case 4:
 this.$ = !$$[$0];
 break;
 case 5:
-this.$ = typeof $$[$0] === 'boolean' ? $$[$0] : $$[$0-2] === $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : (typeof $$[$0] === 'boolean' ? $$[$0] : $$[$0-2] === $$[$0]);
 break;
 case 6:
-this.$ = $$[$0-2] !== $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : $$[$0-2] !== $$[$0];
 break;
 case 7:
 this.$ = validator ? validator.in($$[$0-2], $$[$0]) : $$[$0].indexOf($$[$0-2]) !== -1
@@ -108,16 +108,16 @@ case 8:
 this.$ = validator ? validator.not_in($$[$0-2], $$[$0]) : $$[$0].indexOf($$[$0-2]) === -1
 break;
 case 9:
-this.$ = $$[$0-2] > $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : $$[$0-2] > $$[$0];
 break;
 case 10:
-this.$ = $$[$0-2] >= $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : $$[$0-2] >= $$[$0];
 break;
 case 11:
-this.$ = $$[$0-2] < $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : $$[$0-2] < $$[$0];
 break;
 case 12:
-this.$ = $$[$0-2] <= $$[$0];
+this.$ = validator ? validator.compare($$[$0-2], $$[$0-1], $$[$0]) : $$[$0-2] <= $$[$0];
 break;
 case 13:
 this.$ = $$[$0-1];
